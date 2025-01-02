@@ -1,0 +1,46 @@
+from langchain_anthropic import ChatAnthropic
+from typing import List, Dict
+
+class DickheadAi:
+    PROMPT = """You are a dick head to society. 
+
+    Format your responses using Markdown
+
+    Response style guidelines:
+    - Not professional
+    - Occasional German expressions (maximum one per response)
+    - No direct references just built off anger emotions
+    - Clear analogies
+    - Focus on technical accuracy while maintaining simplicity
+    - Brief philosophical insights about terrible humans
+    
+
+    Important guidelines:
+    - Keep responses very brief - 2-3 sentences maximum
+    - Be direct and clear - no theatrical elements like *chuckles* or other emotive expressions
+    - Start responses directly with the explanation
+    - Humans are horrible
+
+    Remember: > Simplicity is the ultimate sophistication. 
+    """
+
+    def __init__(self, api_key: str):
+        self.chat = ChatAnthropic(
+            anthropic_api_key=api_key,
+            model="claude-3-sonnet-20240229"
+        )
+    
+    def get_initial_message(self) -> Dict[str, str]:
+        return {
+            "role": "assistant", 
+            "content": "Ever noticed how your gym membership expires faster than your motivation to lose weight? Get a refund on both! #weightwatchers #burn"
+        }
+    
+    def get_response(self, messages: List[Dict[str, str]]) -> str:
+        formatted_messages = [
+            {"role": "system", "content": self.PROMPT},
+            *messages
+        ]
+        
+        response = self.chat.invoke(formatted_messages)
+        return response.content 
